@@ -61,7 +61,11 @@ class LoaderNode(template.Node):
         return urljoin(domain, reverse('shared_session:share', kwargs={'message': message}))
 
     def render(self, context):
-        request = context['request']
+
+        request = self.request
+        
+        if not request and 'request' in context:
+            request = context['request']
 
         if request.session.is_empty():
             return ''
